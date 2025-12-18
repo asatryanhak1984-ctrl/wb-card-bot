@@ -93,3 +93,33 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+import os, json, datetime
+import gspread
+from google.oauth2.service_account import Credentials
+
+def test_google_sheets():
+    creds_json = json.loads(os.environ["GSHEET_CREDS_JSON"])
+    scopes = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive"
+    ]
+    creds = Credentials.from_service_account_info(creds_json, scopes=scopes)
+    gc = gspread.authorize(creds)
+
+    sh = gc.open_by_key(os.environ["GSHEET_ID"])
+    ws = sh.worksheet("data")
+
+    ws.append_row([
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "TEST_USER_ID",
+        "test_username",
+        "test_file_ids",
+        "test_links",
+        "TEST: запись из Railway",
+        "", "", "", "", "",
+        "OK"
+    ], value_input_option="USER_ENTERED")
+
+    print("✅ Google Sheets: запись успешна")

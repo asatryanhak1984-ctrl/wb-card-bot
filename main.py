@@ -3,7 +3,16 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 
 SYSTEM_TEXT = "Пожалуйста, загрузите фотографии карточки товара."
-USER_STATE = {}
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+
+    USER_DATA[user_id] = {"step": "WAIT_CATEGORY", "answers": {}}
+
+    await update.message.reply_text(
+        "Фото получены.\n\n"
+        "Вопрос №1: Категория товара на маркетплейсе (точная)?"
+    )
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(SYSTEM_TEXT)

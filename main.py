@@ -123,3 +123,4 @@ def test_google_sheets():
     ], value_input_option="USER_ENTERED")
 
     print("✅ Google Sheets: запись успешна")
+test_google_sheets()
